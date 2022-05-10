@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+static char *font = "MesloLGS Nerd Font Mono:size=12:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -139,9 +139,9 @@ static const char *colorname[] = {
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 7;
-unsigned int defaultbg = 0;
-static unsigned int defaultcs = 256;
+unsigned int defaultfg = 257;
+unsigned int defaultbg = 256;
+static unsigned int defaultcs = 255;
 static unsigned int defaultrcs = 257;
 
 /*
@@ -157,8 +157,8 @@ static unsigned int cursorshape = 2;
  * Default columns and rows numbers
  */
 
-static unsigned int cols = 80;
-static unsigned int rows = 24;
+static unsigned int cols = 124;
+static unsigned int rows = 29;
 
 /*
  * Default colour and shape of the mouse cursor
@@ -197,7 +197,7 @@ static MouseShortcut mshortcuts[] = {
 
 /* Internal keyboard shortcuts. */
 #define MODKEY Mod1Mask
-#define TERMMOD (ControlMask|ShiftMask)
+#define TERMMOD (Mod1Mask|ControlMask)
 
 static Shortcut shortcuts[] = {
 	/* mask                 keysym          function        argument */
@@ -205,9 +205,9 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
 	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
 	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
-	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
+	{ TERMMOD,              XK_KP_Add,      zoom,           {.f = +1} },
+	{ TERMMOD,              XK_KP_Subtract, zoom,           {.f = -1} },
+	{ TERMMOD,              XK_KP_Multiply, zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
@@ -256,7 +256,6 @@ static uint ignoremod = Mod2Mask|XK_SWITCH_MOD;
  */
 static Key key[] = {
 	/* keysym           mask            string      appkey appcursor */
-	{ XK_KP_Home,       ControlMask,    "\033[1;5H",     0,    0},
 	{ XK_KP_Home,       ShiftMask,      "\033[2J",       0,   -1},
 	{ XK_KP_Home,       ShiftMask,      "\033[1;2H",     0,   +1},
 	{ XK_KP_Home,       XK_ANY_MOD,     "\033[H",        0,   -1},
@@ -273,7 +272,6 @@ static Key key[] = {
 	{ XK_KP_Right,      XK_ANY_MOD,     "\033Ov",       +1,    0},
 	{ XK_KP_Right,      XK_ANY_MOD,     "\033[C",        0,   -1},
 	{ XK_KP_Right,      XK_ANY_MOD,     "\033OC",        0,   +1},
-	{ XK_KP_Prior,      Mod1Mask,       "\033[5;3~",     0,    0},
 	{ XK_KP_Prior,      ShiftMask,      "\033[5;2~",     0,    0},
 	{ XK_KP_Prior,      XK_ANY_MOD,     "\033[5~",       0,    0},
 	{ XK_KP_Begin,      XK_ANY_MOD,     "\033[E",        0,    0},
@@ -282,22 +280,19 @@ static Key key[] = {
 	{ XK_KP_End,        ShiftMask,      "\033[K",       -1,    0},
 	{ XK_KP_End,        ShiftMask,      "\033[1;2F",    +1,    0},
 	{ XK_KP_End,        XK_ANY_MOD,     "\033[4~",       0,    0},
-	{ XK_KP_Next,       Mod1Mask,       "\033[6;3~",     0,    0},
 	{ XK_KP_Next,       ShiftMask,      "\033[6;2~",     0,    0},
 	{ XK_KP_Next,       XK_ANY_MOD,     "\033[6~",       0,    0},
 	{ XK_KP_Insert,     ShiftMask,      "\033[2;2~",    +1,    0},
 	{ XK_KP_Insert,     ShiftMask,      "\033[4l",      -1,    0},
-	{ XK_KP_Insert,     Mod1Mask,       "\033[2;3~",     0,    0},
 	{ XK_KP_Insert,     ControlMask,    "\033[L",       -1,    0},
 	{ XK_KP_Insert,     ControlMask,    "\033[2;5~",    +1,    0},
 	{ XK_KP_Insert,     XK_ANY_MOD,     "\033[4h",      -1,    0},
 	{ XK_KP_Insert,     XK_ANY_MOD,     "\033[2~",      +1,    0},
-	{ XK_KP_Delete,     ControlMask,    "\033[3;5~",    -1,    0},
+	{ XK_KP_Delete,     ControlMask,    "\033[M",       -1,    0},
 	{ XK_KP_Delete,     ControlMask,    "\033[3;5~",    +1,    0},
-	{ XK_KP_Delete,     Mod1Mask,       "\033[3;3~",     0,    0},
 	{ XK_KP_Delete,     ShiftMask,      "\033[2K",      -1,    0},
 	{ XK_KP_Delete,     ShiftMask,      "\033[3;2~",    +1,    0},
-	{ XK_KP_Delete,     XK_ANY_MOD,     "\033[3~",      -1,    0},
+	{ XK_KP_Delete,     XK_ANY_MOD,     "\033[P",       -1,    0},
 	{ XK_KP_Delete,     XK_ANY_MOD,     "\033[3~",      +1,    0},
 	{ XK_KP_Multiply,   XK_ANY_MOD,     "\033Oj",       +2,    0},
 	{ XK_KP_Add,        XK_ANY_MOD,     "\033Ok",       +2,    0},
@@ -357,21 +352,18 @@ static Key key[] = {
 	{ XK_Return,        XK_ANY_MOD,     "\r",            0,    0},
 	{ XK_Insert,        ShiftMask,      "\033[4l",      -1,    0},
 	{ XK_Insert,        ShiftMask,      "\033[2;2~",    +1,    0},
-	{ XK_Insert,        Mod1Mask,       "\033[2;3~",     0,    0},
 	{ XK_Insert,        ControlMask,    "\033[L",       -1,    0},
 	{ XK_Insert,        ControlMask,    "\033[2;5~",    +1,    0},
 	{ XK_Insert,        XK_ANY_MOD,     "\033[4h",      -1,    0},
 	{ XK_Insert,        XK_ANY_MOD,     "\033[2~",      +1,    0},
-	{ XK_Delete,        ControlMask,    "\033[3;5~",    -1,    0},
+	{ XK_Delete,        ControlMask,    "\033[M",       -1,    0},
 	{ XK_Delete,        ControlMask,    "\033[3;5~",    +1,    0},
-	{ XK_Delete,        Mod1Mask,       "\033[3;3~",     0,    0},
 	{ XK_Delete,        ShiftMask,      "\033[2K",      -1,    0},
 	{ XK_Delete,        ShiftMask,      "\033[3;2~",    +1,    0},
-	{ XK_Delete,        XK_ANY_MOD,     "\033[3~",      -1,    0},
+	{ XK_Delete,        XK_ANY_MOD,     "\033[P",       -1,    0},
 	{ XK_Delete,        XK_ANY_MOD,     "\033[3~",      +1,    0},
 	{ XK_BackSpace,     XK_NO_MOD,      "\177",          0,    0},
 	{ XK_BackSpace,     Mod1Mask,       "\033\177",      0,    0},
-	{ XK_Home,          ControlMask,    "\033[1;5H",     0,    0},
 	{ XK_Home,          ShiftMask,      "\033[2J",       0,   -1},
 	{ XK_Home,          ShiftMask,      "\033[1;2H",     0,   +1},
 	{ XK_Home,          XK_ANY_MOD,     "\033[H",        0,   -1},
@@ -382,11 +374,9 @@ static Key key[] = {
 	{ XK_End,           ShiftMask,      "\033[1;2F",    +1,    0},
 	{ XK_End,           XK_ANY_MOD,     "\033[4~",       0,    0},
 	{ XK_Prior,         ControlMask,    "\033[5;5~",     0,    0},
-	{ XK_Prior,         Mod1Mask,       "\033[5;3~",     0,    0},
 	{ XK_Prior,         ShiftMask,      "\033[5;2~",     0,    0},
 	{ XK_Prior,         XK_ANY_MOD,     "\033[5~",       0,    0},
 	{ XK_Next,          ControlMask,    "\033[6;5~",     0,    0},
-	{ XK_Next,          Mod1Mask,       "\033[6;3~",     0,    0},
 	{ XK_Next,          ShiftMask,      "\033[6;2~",     0,    0},
 	{ XK_Next,          XK_ANY_MOD,     "\033[6~",       0,    0},
 	{ XK_F1,            XK_NO_MOD,      "\033OP" ,       0,    0},
